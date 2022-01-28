@@ -1,30 +1,35 @@
 <template>
   <div class="list">
-    <car-card v-for="car in cars" :key="car.id" :car="car"/>
+    <car-card v-for="car in cars" :key="car.id" :car="car" />
   </div>
 </template>
 
 <script>
 import carCard from "./car-card.vue";
-import { ref, computed } from 'vue'
-import { useStore } from 'vuex'
+import { ref, computed, onMounted } from "vue";
+import { useStore } from "vuex";
 
 export default {
   components: { carCard },
 
-  setup(){
-   const store = useStore()
+  setup() {
+    const store = useStore();
 
-   return {
-    cars: computed(() => store.state.cars.cars),
-   }
+    let setCars = ()=>{
+      store.commit('setCars')
+    }
+
+    onMounted(setCars);
+
+    return {
+      cars: computed(() => store.getters.getCars),
+    };
   },
-  
 };
 </script>
 
 <style lang="scss">
-  .list{
-    width: 100%;
-  }
+.list {
+  width: 100%;
+}
 </style>

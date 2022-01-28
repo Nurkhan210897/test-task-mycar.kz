@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <div class="home">
-      <div class="col-5"></div>
+      <div class="col-5">
+        <add-car/>
+      </div>
       <div class="col-7">
         <car-list />
       </div>
@@ -11,10 +13,12 @@
 
 <script>
 import carList from "@/components/home/car-list.vue";
+import AddCar from '@/components/home/add-Car.vue';
 
 export default {
   components: {
     carList,
+    AddCar,
   },
 };
 </script>

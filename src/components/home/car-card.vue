@@ -1,20 +1,37 @@
 <template>
   <div class="card">
-    <pre>{{dateOfIssue}}</pre>
-    <p class="text">
-      Brand: <span class="text --bold">{{ car.brand }}</span>
-    </p>
-    <p class="text">
-      Model: <span class="text --bold">{{ car.model }}</span>
-    </p>
-    <p class="text">
-      Number plate:
-      <span class="text --bold --uppercase">{{ car.numberPlate }}</span>
-    </p>
-    <p class="card-status">
-      Status: <span :class="`card-status_circle ${statusColor}`"></span> {{ car.status }}
-      {{dateOfIssue}}
-    </p>
+    <ul class="card-details col-7">
+      <li>
+        <p class="text">
+          Brand: <span class="text --bold">{{ car.brand }}</span>
+        </p>
+      </li>
+      <li>
+        <p class="text">
+          Model: <span class="text --bold">{{ car.model }}</span>
+        </p>
+      </li>
+      <li>
+        <p class="text">
+          Number plate:
+          <span class="text --bold --uppercase">{{ car.numberPlate }}</span>
+        </p>
+      </li>
+      <li>
+        <p class="card-status">
+          Status: <span :class="`card-status_circle ${statusColor}`"></span>
+          {{ car.status }}
+        </p>
+      </li>
+    </ul>
+    <div class="card-clients col-5" v-if="car.clients">
+      <p class="title text --bold">Clients:</p>
+      <ul class="card-clients_list">
+        <li v-for="(item, index) in car.clients" :key="index">
+          {{ item.client }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -27,7 +44,7 @@ export default {
   },
   setup(props) {
     let status = props.car.status;
-    let dateOfIssue = new Date(props.car?.clients?.dateOfIssue);
+    let dateOfIssue = props.car?.clients?.dateOfIssue;
 
     const statusColor = computed(() => {
       switch (status) {
@@ -44,7 +61,7 @@ export default {
 
     return {
       statusColor,
-      dateOfIssue
+      dateOfIssue,
     };
   },
 };
@@ -55,8 +72,25 @@ export default {
   width: 100%;
   border-radius: 5px;
   padding: 10px 20px;
-  border: 1px solid #b2b2b2;
   margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
+  box-shadow: 0px 2px 14px -7px #585858;
+  ul {
+    margin: 0;
+    padding: 0;
+    li{
+      list-style-type: none;
+    }
+  }
+  &-details {
+    li {
+      margin-bottom: 12px;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
   &-status {
     display: flex;
     align-items: center;
@@ -77,7 +111,18 @@ export default {
       }
     }
   }
-  &:last-child{
+  &-clients {
+    background-color: #eaeaea;
+    padding: 10px;
+    border-radius: 5px;
+    .title{
+      margin-bottom: 15px;
+    }
+    li{
+      margin-bottom: 10px;
+    }
+  }
+  &:last-child {
     margin-bottom: 0;
   }
 }
