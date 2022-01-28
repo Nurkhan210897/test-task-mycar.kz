@@ -1,6 +1,9 @@
 <template>
-  <form action="">
-    <text-field type="text" v-model="carData.brand" />
+  <form action="" @submit.prevent="addCar">
+    <text-field
+      type="text"
+      v-model="carData.brand"
+    />
     <text-field type="text" v-model="carData.model" />
     <text-field type="text" v-model="carData.numberPlate" />
     <select name="" id="">
@@ -8,16 +11,19 @@
         {{ option }}
       </option>
     </select>
-    <button type="submit" @click.prevent="addCar"></button>
+    <button type="submit">AddCar</button>
   </form>
 </template>
 
 <script>
 import textField from "../base/textField.vue";
-import {ref} from 'vue'
+import { useStore } from "vuex";
+import { ref } from "vue";
 export default {
   components: { textField },
   setup(props) {
+    const store = useStore();
+
     const carData = ref({
       brand: "",
       model: "",
@@ -25,9 +31,15 @@ export default {
       status: ["booked", "in rent", "in the parking"],
     });
 
-    return{
-      carData
-    }
+    let addCar = () => {
+      carData.id = Math.random();
+      store.commit("addCar", carData);
+    };
+
+    return {
+      carData,
+      addCar,
+    };
   },
 };
 </script>

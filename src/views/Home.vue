@@ -13,7 +13,7 @@
 
 <script>
 import carList from "@/components/home/car-list.vue";
-import AddCar from '@/components/home/add-Car.vue';
+import AddCar from '@/components/home/add-car.vue';
 
 export default {
   components: {

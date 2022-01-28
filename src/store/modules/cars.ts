@@ -16,6 +16,9 @@ export default {
         });
       });
     },
+    addCar(state, carData){
+        state.cars.push(carData)        
+    }
   },
 
   getters: {
