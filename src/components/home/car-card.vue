@@ -24,27 +24,48 @@
         </p>
       </li>
     </ul>
-    <div class="card-clients col-5" v-if="car.clients">
-      <p class="title text --bold">Clients:</p>
-      <ul class="card-clients_list">
-        <li v-for="(item, index) in car.clients" :key="index">
-          {{ item.client }}
-        </li>
-      </ul>
+    <div class="col-5" v-if="car.clients">
+      <div class="card-clients">
+        <p class="title text --bold">Clients:</p>
+        <ul class="card-clients_list">
+          <li v-for="(item, index) in car.clients" :key="index">
+            {{ item.client }}
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="card-delete">
+      <button class="btn --edit" @click="deleteCar">&#10060;</button>
+      <button class="btn --edit" @click="showModal(car)">&#128396;</button>
     </div>
   </div>
 </template>
 
 <script>
 import { computed } from "vue";
+import { useStore } from "vuex";
+import { ref } from "vue";
 
 export default {
+  
   props: {
-    car: Object,
+    car: {
+      type: Object,
+      default: () => {},
+    },
+    carIndex: {
+      type: Number,
+      default: () => 0,
+    },
   },
-  setup(props) {
-    let status = props.car.status;
-    let dateOfIssue = props.car?.clients?.dateOfIssue;
+
+  emits:["showModal"],
+
+  setup(props, {emit}) {
+    const store = useStore();
+    const status = props.car.status;
+    const dateOfIssue = props.car?.clients?.dateOfIssue;
+    let isModal = ref(false);
 
     const statusColor = computed(() => {
       switch (status) {
@@ -59,9 +80,18 @@ export default {
       }
     });
 
+    const deleteCar = () => store.commit("deleteCar", props.carIndex);
+
+    const showModal = (car) => {
+      emit("showModal", car)
+    }
+
     return {
       statusColor,
       dateOfIssue,
+      deleteCar,
+      isModal,
+      showModal,
     };
   },
 };
@@ -76,10 +106,11 @@ export default {
   display: flex;
   align-items: flex-start;
   box-shadow: 0px 2px 14px -7px #585858;
+  position: relative;
   ul {
     margin: 0;
     padding: 0;
-    li{
+    li {
       list-style-type: none;
     }
   }
@@ -115,10 +146,22 @@ export default {
     background-color: #eaeaea;
     padding: 10px;
     border-radius: 5px;
-    .title{
+    .title {
       margin-bottom: 15px;
     }
-    li{
+    li {
+      margin-bottom: 10px;
+    }
+  }
+  &-delete {
+    position: absolute;
+    top: 12px;
+    right: 6px;
+    cursor: pointer;
+    button {
+      display: block;
+      width: 25px;
+      height: 25px;
       margin-bottom: 10px;
     }
   }

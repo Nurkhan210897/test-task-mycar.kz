@@ -12,8 +12,16 @@
 .col-5 {
     width: 100%;
     flex: 0 0 30%;
+    padding: 0 15px;
 }
 
 .col-7 {
     flex: 0 0 70%;
+    padding: 0 15px;
+}
+
+.default-select {
+    width: 100%;
+    padding: 8px 10px;
+    cursor: pointer;
 }

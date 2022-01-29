@@ -1,17 +1,14 @@
 <template>
-  <form action="" @submit.prevent="addCar">
-    <text-field
-      type="text"
-      v-model="carData.brand"
-    />
-    <text-field type="text" v-model="carData.model" />
-    <text-field type="text" v-model="carData.numberPlate" />
-    <select name="" id="">
-      <option value="" v-for="(option, index) in carData.status" :key="index">
+  <form action="" class="form" @submit.prevent="addCar">
+    <text-field type="text" v-model="carData.brand" placeholder="brand" />
+    <text-field type="text" v-model="carData.model" placeholder="model" />
+    <text-field type="text" v-model="carData.numberPlate" placeholder="number-plate" />
+    <select class="default-select" v-model="carData.status">
+      <option v-for="(option, index) in allStatus" :key="index" :value="option">
         {{ option }}
       </option>
     </select>
-    <button type="submit">AddCar</button>
+    <button type="submit" class="btn --submit">Add car</button>
   </form>
 </template>
 
@@ -23,25 +20,33 @@ export default {
   components: { textField },
   setup(props) {
     const store = useStore();
-
+    const allStatus = ["booked", "in rent", "in the parking"];
     const carData = ref({
+      id: Math.random(),
       brand: "",
       model: "",
       numberPlate: "",
-      status: ["booked", "in rent", "in the parking"],
+      status: "in the parking"
     });
 
-    let addCar = () => {
-      carData.id = Math.random();
+    const addCar = () => {
       store.commit("addCar", carData);
     };
 
     return {
       carData,
       addCar,
+      allStatus
     };
   },
 };
 </script>
 
-<style></style>
+<style lang="scss">
+  .form{
+    .btn{
+      margin-top: 2rem;
+      width: 100%;
+    }
+  }
+</style>

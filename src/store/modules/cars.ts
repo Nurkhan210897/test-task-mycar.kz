@@ -18,6 +18,13 @@ export default {
     },
     addCar(state, carData){
         state.cars.push(carData)        
+    },
+    deleteCar(state, carIndex){
+      state.cars.splice(carIndex, 1)
+    },
+
+    saveEditedData(state, carData){
+      console.log(carData);
     }
   },
 
