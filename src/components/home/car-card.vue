@@ -30,13 +30,14 @@
         <ul class="card-clients_list">
           <li v-for="(item, index) in car.clients" :key="index">
             {{ item.client }}
+            {{formatDate(item.dateOfIssue)}}
           </li>
         </ul>
       </div>
     </div>
-    <div class="card-delete">
-      <button class="btn --edit" @click="deleteCar">&#10060;</button>
-      <button class="btn --edit" @click="showModal(car)">&#128396;</button>
+    <div class="card-utils">
+      <button class="btn --delete" @click="deleteCar">&#10060;</button>
+      <button class="btn --edit" @click="showEditModal(car)">&#128396;</button>
     </div>
   </div>
 </template>
@@ -47,7 +48,6 @@ import { useStore } from "vuex";
 import { ref } from "vue";
 
 export default {
-  
   props: {
     car: {
       type: Object,
@@ -59,9 +59,9 @@ export default {
     },
   },
 
-  emits:["showModal"],
+  emits: ["showEditModal"],
 
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const store = useStore();
     const status = props.car.status;
     const dateOfIssue = props.car?.clients?.dateOfIssue;
@@ -82,16 +82,23 @@ export default {
 
     const deleteCar = () => store.commit("deleteCar", props.carIndex);
 
-    const showModal = (car) => {
-      emit("showModal", car)
-    }
+    const formatDate = (date) => {
+      return new Intl.DateTimeFormat("ru-RU", { dateStyle: "long" }).format(
+        new Date(date)
+      );
+    };
+
+    const showEditModal = (car) => {
+      emit("showEditModal", car);
+    };
 
     return {
       statusColor,
       dateOfIssue,
       deleteCar,
       isModal,
-      showModal,
+      showEditModal,
+      formatDate
     };
   },
 };
@@ -153,7 +160,7 @@ export default {
       margin-bottom: 10px;
     }
   }
-  &-delete {
+  &-utils {
     position: absolute;
     top: 12px;
     right: 6px;
