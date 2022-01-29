@@ -29,8 +29,9 @@
         <p class="title text --bold">Clients:</p>
         <ul class="card-clients_list">
           <li v-for="(item, index) in car.clients" :key="index">
-            {{ item.client }}
-            {{formatDate(item.dateOfIssue)}}
+            <p class="text">{{ item.client }}</p>
+            <p class="text">Date of issue: <span class="text --bold">{{formatDate(item.dateOfIssue)}}</span></p>
+            <p class="text">Return date: <span class="text --bold">{{formatDate(item.returnDate)}}</span></p>
           </li>
         </ul>
       </div>
@@ -46,6 +47,7 @@
 import { computed } from "vue";
 import { useStore } from "vuex";
 import { ref } from "vue";
+import {formatDate} from "@/utils/formatDate"
 
 export default {
   props: {
@@ -81,12 +83,6 @@ export default {
     });
 
     const deleteCar = () => store.commit("deleteCar", props.carIndex);
-
-    const formatDate = (date) => {
-      return new Intl.DateTimeFormat("ru-RU", { dateStyle: "long" }).format(
-        new Date(date)
-      );
-    };
 
     const showEditModal = (car) => {
       emit("showEditModal", car);
